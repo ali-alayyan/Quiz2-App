@@ -6,31 +6,38 @@ class QuestionsScreen extends StatelessWidget {
   const QuestionsScreen({
     super.key,
     required this.onSelectAnswer,
+    required this.onSubmit,
   });
 
-  final Function onSelectAnswer;
+  final Function(int, String) onSelectAnswer;
+  final VoidCallback onSubmit;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Column(
-        children: [
-          //asMap is a function that creates a map of the list.
-          //The map uses the indices of this list as keys and the corresponding objects as values.
-          ...questions.asMap().entries.map((entry) {
-            int qIndex = entry.key;
-            var question = entry.value;
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            ...questions.asMap().entries.map((entry) {
+              int qIndex = entry.key;
+              var question = entry.value;
 
-            return QuestionItem(
-              questionIndex: qIndex,
-              question: question,			  
-              onSelectAnswer: onSelectAnswer,
-            );
-          }),
+              return QuestionItem(
+                questionIndex: qIndex,
+                question: question,
+                onSelectAnswer: onSelectAnswer,
+              );
+            }),
 
-          const SizedBox(height: 20),
-        ],
+            const SizedBox(height: 30),
+
+            ElevatedButton(
+              onPressed: onSubmit,
+              child: const Text("Submit"),
+            ),
+          ],
+        ),
       ),
     );
   }
